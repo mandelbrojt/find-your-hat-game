@@ -7,9 +7,9 @@ const fieldCharacter = "░";
 const playerCharacter = "*";
 
 class Field {
-    constructor(fieldGrid) {
-        this.fieldGrid = fieldGrid;
-    }
+  constructor(fieldGrid) {
+    this.fieldGrid = fieldGrid;
+  }
 
   print() {
     // Join field rows and add line breaks per row
@@ -26,12 +26,12 @@ class Field {
       if (rowIndex === -1) {
         throw new Error("Element not found in any row.");
       }
-  
+
       const colIndex = this.fieldGrid[rowIndex].findIndex((col) => col === element);
       if (colIndex === -1) {
         throw new Error("Element not found in the specified row.");
       }
-  
+
       console.log(`Element '${element}' is located at row ${rowIndex + 1} and column ${colIndex + 1}`);
       return { rowIndex, colIndex };
     } catch (error) {
@@ -39,48 +39,58 @@ class Field {
       return null;
     }
   }
-  
-  movePlayer(direction, playerPosition) {
-    let latestPlayerRow, latestPlayerCol;
-    if (direction === "w") {
-      // move up: row index is decreased by 1
-      try {
-        latestPlayerRow = playerPosition.rowIndex - 1;
-        latestPlayerCol = playerPosition.colIndex;
-        this.fieldGrid[latestPlayerRow][latestPlayerCol] = "*";
-      } catch (error) {
-        throw new Error("Player is out of bound. Try another movement.")
-      }
-    } else if (direction === "d") {
-      // move right: column index is increased by 1
-      try {
-        latestPlayerRow = playerPosition.rowIndex;
-        latestPlayerCol = playerPosition.colIndex + 1;
-        this.fieldGrid[latestPlayerRow][latestPlayerCol] = "*";
-      } catch (error) {
-        throw new Error("Player is out of bound. Try another movement.")
-      }
-    } else if (direction === "s") {
-      // move down: row index is increased by 1
-      try {
-        latestPlayerRow = playerPosition.rowIndex + 1;
-        latestPlayerCol = playerPosition.colIndex;
-        this.fieldGrid[latestPlayerRow][latestPlayerCol] = "*";
-      } catch (error) {
-        throw new Error("Player is out of bound. Try another movement.")
-      }
-    } else if (direction === "a") {
-      // move left: column index is decreased by 1
-      try {
-        latestPlayerRow = playerPosition.rowIndex;
-        latestPlayerCol = playerPosition.colIndex - 1;
-        this.fieldGrid[latestPlayerRow][latestPlayerCol] = "*";
-      } catch (error) {
-        throw new Error("Player is out of bound. Try another movement.")
-      }
-    } else {
 
+  movePlayer(direction, playerPosition) {
+    const { rowIndex, colIndex } = playerPosition;
+    let currentPlayerRow = rowIndex;
+    let currentPlayerCol = colIndex;
+    let isAlive = true;
+    let hasWon = false;
+
+    switch (direction) {
+      case "w":
+        currentPlayerRow -= 1; // move up
+        break;
+      case "d":
+        currentPlayerCol += 1; // move right
+        break;
+      case "s":
+        currentPlayerRow += 1; // move down
+        break;
+      case "a":
+        currentPlayerCol -= 1; // move left
+        break;
+      default:
+        console.log("Invalid move. Type 'w', 'a', 's', or 'd' to move.");
+        return playerPosition; // Return the original position if the move is invalid
     }
+
+    // Check if the new position is within bounds
+    if (
+      currentPlayerRow < 0 ||
+      currentPlayerRow >= this.fieldGrid.length ||
+      currentPlayerCol < 0 ||
+      currentPlayerCol >= this.fieldGrid[0].length
+    ) {
+      isAlive = false;
+    }
+
+    // Check if the new position lands on a hole
+    if (this.fieldGrid[currentPlayerRow][currentPlayerCol] === hole) {
+      isAlive = false;
+      console.log("Oh no! You landed on a hole =(")
+    }
+
+    // Check if the new position lands on a hat
+    if (this.fieldGrid[currentPlayerRow][currentPlayerCol] === hat) {
+      hasWon = true;
+      console.log("Congratulations! You found the hat.");
+    }
+
+    // Update the player's position
+    this.fieldGrid[currentPlayerRow][currentPlayerCol] = playerCharacter;
+
+    return { currentPlayerRow, currentPlayerCol, isAlive, hasWon };
   }
   /**
    * Generates a field grid with specified dimensions and populates it with field characters, holes, a player, and a hat.
