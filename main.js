@@ -3,8 +3,8 @@ const Field = require("./Field");
 
 let direction;
 
-const playingField = Field.generateField(7, 5, 30);
-const field = new Field(playingField);
+const fieldGrid = Field.createFieldGrid(7, 5, 30);
+const field = new Field(fieldGrid);
 field.print();
 
 //console.log(field.fieldGrid);

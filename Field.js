@@ -24,7 +24,7 @@ class Field {
     );
   }
 
-  static generateField(rows, columns, percentage) {
+  static createFieldGrid(rows, columns, percentage) {
     // Easier to start from a grid full of field characters
     const playingField = Array.from({ length: rows }, () =>
       Array(columns).fill(fieldCharacter)
