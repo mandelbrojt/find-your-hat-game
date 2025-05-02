@@ -9,6 +9,7 @@ field.print();
 
 //console.log(field.fieldGrid);
 
-field.findPlayer();
+playerCoordinates = field.findElement("*");
+console.log(playerCoordinates);
 
 // direction = prompt("\nWhich way? \n⬆️ = w \n➡️ = d \n⬇️ = s \n⬅️ = a \nType your move: ");
