@@ -20,7 +20,7 @@ class Field {
    * Find the first occurrence of an element in the grid.
    * @param {String} element - The element you want to locate in the grid. 
    */
-  findElement(element) {
+  getElementCoordinates(element) {
     try {
       const rowIndex = this.fieldGrid.findIndex((row) => row.includes(element));
       if (rowIndex === -1) {
@@ -37,6 +37,49 @@ class Field {
     } catch (error) {
       console.log(`Error: ${error.message}`);
       return null;
+    }
+  }
+  
+  movePlayer(direction, playerPosition) {
+    let latestPlayerRow, latestPlayerCol;
+    if (direction === "w") {
+      // move up: row index is decreased by 1
+      try {
+        latestPlayerRow = playerPosition.rowIndex - 1;
+        latestPlayerCol = playerPosition.colIndex;
+        this.fieldGrid[latestPlayerRow][latestPlayerCol] = "*";
+      } catch (error) {
+        throw new Error("Player is out of bound. Try another movement.")
+      }
+    } else if (direction === "d") {
+      // move right: column index is increased by 1
+      try {
+        latestPlayerRow = playerPosition.rowIndex;
+        latestPlayerCol = playerPosition.colIndex + 1;
+        this.fieldGrid[latestPlayerRow][latestPlayerCol] = "*";
+      } catch (error) {
+        throw new Error("Player is out of bound. Try another movement.")
+      }
+    } else if (direction === "s") {
+      // move down: row index is increased by 1
+      try {
+        latestPlayerRow = playerPosition.rowIndex + 1;
+        latestPlayerCol = playerPosition.colIndex;
+        this.fieldGrid[latestPlayerRow][latestPlayerCol] = "*";
+      } catch (error) {
+        throw new Error("Player is out of bound. Try another movement.")
+      }
+    } else if (direction === "a") {
+      // move left: column index is decreased by 1
+      try {
+        latestPlayerRow = playerPosition.rowIndex;
+        latestPlayerCol = playerPosition.colIndex - 1;
+        this.fieldGrid[latestPlayerRow][latestPlayerCol] = "*";
+      } catch (error) {
+        throw new Error("Player is out of bound. Try another movement.")
+      }
+    } else {
+
     }
   }
   /**
