@@ -39,7 +39,17 @@ class Field {
       return null;
     }
   }
-
+  /**
+   * Generates a field grid with specified dimensions and populates it with field characters, holes, a player, and a hat.
+   * 
+   * The grid is initially filled with field characters. A specified percentage of the grid is then replaced with holes.
+   * Additionally, a single player character and a single hat character are placed at random positions on the grid.
+   * 
+   * @param {Number} rows - The number of rows in the field grid.
+   * @param {Number} columns - The number of columns in the field grid.
+   * @param {Number} percentage - The percentage of the grid to be filled with holes.
+   * @returns {Array<Array<String>>} A 2D array representing the field grid.
+   */
   static createFieldGrid(rows, columns, percentage) {
     // Easier to start from a grid full of field characters
     const playingField = Array.from({ length: rows }, () =>
