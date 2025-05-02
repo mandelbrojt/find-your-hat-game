@@ -16,12 +16,28 @@ class Field {
     console.log(this.fieldGrid.map((row) => row.join(" ")).join("\n"));
   }
 
-  findPlayer() {
-    const rowIndex = this.fieldGrid.findIndex((row) => row.includes("*"));
-    const colIndex = this.fieldGrid[rowIndex].findIndex((col) => col === "*");
-    console.log(
-      `Player is located at row ${rowIndex + 1} and column ${colIndex + 1}`
-    );
+  /**
+   * Find the first occurrence of an element in the grid.
+   * @param {String} element - The element you want to locate in the grid. 
+   */
+  findElement(element) {
+    try {
+      const rowIndex = this.fieldGrid.findIndex((row) => row.includes(element));
+      if (rowIndex === -1) {
+        throw new Error("Element not found in any row.");
+      }
+  
+      const colIndex = this.fieldGrid[rowIndex].findIndex((col) => col === element);
+      if (colIndex === -1) {
+        throw new Error("Element not found in the specified row.");
+      }
+  
+      console.log(`Element '${element}' is located at row ${rowIndex + 1} and column ${colIndex + 1}`);
+      return { rowIndex, colIndex };
+    } catch (error) {
+      console.log(`Error: ${error.message}`);
+      return null;
+    }
   }
 
   static createFieldGrid(rows, columns, percentage) {
